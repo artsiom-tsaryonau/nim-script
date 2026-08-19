@@ -195,14 +195,11 @@ add_deps_ref() {
 }
 
 write_nimble() {
-    cat >package.nimble <<EOF
+    cat >package.nimble <<'EOF'
 version       = "0.0.1"
 author        = "ns"
 description   = "ephemeral nim-script package"
 license       = "MIT"
-srcDir        = "."
-binDir        = "."
-bin           = @["script.nim"]
 
 requires "nim >= 2.0.0"
 EOF
@@ -221,9 +218,6 @@ nim_build_with_deps() {
     local nim_bin=$1 nimble_bin=$2
     write_nimble
     run_nimble "$nimble_bin" install --depsOnly -y
-    if run_nimble "$nimble_bin" build -y 2>/dev/null; then
-        return 0
-    fi
     run_nim "$nim_bin" c -o:script --mm:orc --hints:off script.nim
 }
 
@@ -393,7 +387,7 @@ while IFS= read -r line || [[ -n "$line" ]]; do
     add_deps_ref "${BASH_REMATCH[1]}" "${BASH_REMATCH[5]:-}" "${BASH_REMATCH[3]:-}"
 done <"$SCRIPT"
 
-sed '1{/^#!/d;}' "$SCRIPT" >script.nim
+sed '1{/^#!/d;}; /^[[:space:]]*\/\/DEPS/d' "$SCRIPT" >script.nim
 
 if [[ ${#REQUIRES[@]} -gt 0 ]]; then
     [[ -n "$NIMBLE_BIN" ]] || die "nimble not found on PATH (needed for //DEPS; install nimble or set NIMBLE)"

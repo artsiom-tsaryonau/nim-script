@@ -43,6 +43,7 @@ Still global by design: the `nim` compiler, `nimble`, and `curl`. Everything nim
 
 ```bash
 ns examples/hello.nim
+ns examples/json.nim
 ns clean examples/hello.nim
 ```
 
@@ -92,6 +93,8 @@ Prefix is **required**:
 //DEPS gh:owner/repo/ref
 //DEPS git:https://gitlab.com/user/repo.git#v1.0
 ```
+
+See `examples/json.nim` for a Nimble registry example.
 
 With no `//DEPS`, `ns` compiles with `nim c` directly. With deps, it generates `package.nimble`, runs `nimble install --depsOnly`, then builds.
 

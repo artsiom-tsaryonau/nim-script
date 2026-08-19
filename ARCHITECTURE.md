@@ -21,7 +21,7 @@ script.nim
     │     gh:…/…/ref           → requires "https://github.com/owner/repo#ref"
     │     git:https://…#ref    → requires "https://…#ref" (any git host)
     │
-    ├─ strip shebang → copy as script.nim in cache
+    ├─ strip shebang + //DEPS lines → copy as script.nim in cache
     │
     ├─ if any //DEPS: generate package.nimble
     │     HOME=<cache>/home → nimble install --depsOnly
