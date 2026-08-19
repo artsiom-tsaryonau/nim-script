@@ -4,9 +4,14 @@ A script runner for Nim with inline //DEPS — Nimble, GitHub, and git remotes.
 
 jbang-style single-file scripts. Every dep is explicit: `requires:`, `gh:`, or `git:`.
 
+### Runner (put `ns` on PATH)
+
 ```bash
+git clone git@github.com:artsiom-tsaryonau/nim-script.git
+cd nim-script
 chmod +x ns
 export PATH="$PWD:$PATH"
+# permanent: sudo ln -sf "$PWD/ns" /usr/local/bin/ns
 # Needs Bash 4.3+ (nameref). On macOS: brew install bash
 ns selfcheck
 ```
@@ -26,10 +31,9 @@ sudo dnf install bash nim curl git
 
 ```bash
 brew install bash nim curl git
+export PATH="$(brew --prefix bash)/bin:$PATH"   # stock /bin/bash is 3.2
 # nimble ships with the nim formula
 ```
-
-Stock macOS `/bin/bash` is 3.2 — put Homebrew `bash` first on `PATH`, or scripts will fail the version check.
 
 You do **not** need a checked-in `package.nimble`. `ns` generates one per script in the cache when `//DEPS` is present. You do **not** need different `//DEPS` per OS.
 
@@ -66,6 +70,8 @@ If `.ns/` exists in the current directory (or `NS_ROOT` is set), `ns` picks it u
 ns clean examples/hello.nim   # drop one script's build dir
 ns clean --all                # wipe cache only
 ```
+
+See [ARCHITECTURE.md](ARCHITECTURE.md) for the pipeline.
 
 ## `//DEPS`
 
