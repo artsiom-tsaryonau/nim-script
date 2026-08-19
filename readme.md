@@ -1,6 +1,8 @@
 # nim-script
 
-jbang-style single-file Nim scripts. Dependencies live in `//DEPS` comments; Nimble packages install into an isolated dir inside each script's cache entry.
+A script runner for Nim with inline //DEPS — Nimble, GitHub, and git remotes.
+
+jbang-style single-file scripts. Dependencies live in `//DEPS` comments; Nimble packages install into an isolated dir inside each script's cache entry.
 
 ## Install
 
