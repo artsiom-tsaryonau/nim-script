@@ -115,13 +115,26 @@ read_stamp() {
 _NS_LOCK=
 release_lock() {
     [[ -n "${_NS_LOCK:-}" ]] || return 0
-    rmdir "$_NS_LOCK" 2>/dev/null || true
+    rm -rf "$_NS_LOCK" 2>/dev/null || true
     _NS_LOCK=
 }
-# ponytail: mkdir lock per script cache; rm .ns_lock manually if a build crashed mid-flight.
 acquire_lock() {
-    local lock=$1
+    local lock=$1 pid
     if mkdir "$lock" 2>/dev/null; then
+        echo $$ >"$lock/pid"
+        _NS_LOCK=$lock
+        trap release_lock EXIT
+        return 0
+    fi
+    if [[ -f "$lock/pid" ]]; then
+        pid=$(<"$lock/pid")
+        kill -0 "$pid" 2>/dev/null && die "locked ($lock) — ns pid $pid is building this script"
+        rm -rf "$lock"
+    else
+        rmdir "$lock" 2>/dev/null || true
+    fi
+    if mkdir "$lock" 2>/dev/null; then
+        echo $$ >"$lock/pid"
         _NS_LOCK=$lock
         trap release_lock EXIT
         return 0
