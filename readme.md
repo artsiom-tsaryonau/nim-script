@@ -94,7 +94,10 @@ Prefix is **required**:
 //DEPS git:https://gitlab.com/user/repo.git#v1.0
 ```
 
-See `examples/json.nim` for a Nimble registry example.
+Examples:
+
+- `examples/hello.nim` — minimal no-deps script
+- `examples/json.nim` — reads `config.json` from `NS_CWD`, or prints sample JSON via `jsony`
 
 With no `//DEPS`, `ns` compiles with `nim c` directly. With deps, it generates `package.nimble`, runs `nimble install --depsOnly`, then builds.
 
